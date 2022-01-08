@@ -1,14 +1,7 @@
 FROM node:14.17.6-alpine
 EXPOSE 3000 
-RUN mkdir -p /app/public /app/src
 WORKDIR /app
-# ignore if don't have react with typescript
-COPY tsconfig.json /app/tsconfig.json 
-
-COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
 COPY . /app/
-## install only the packages defined in the package-lock.json (faster than the normal npm install)
 RUN npm install
 
 # Run 'npm run start' when the container starts.
