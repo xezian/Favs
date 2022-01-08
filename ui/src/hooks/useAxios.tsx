@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:1000';
 
@@ -10,27 +10,35 @@ interface IUseAxiosArguments {
     headers?: string|null
 }
 
-const UseAxios = ({ url, method, body = null, headers = null }: IUseAxiosArguments) => {
+interface IUseAxiosResponse {
+    response: AxiosResponse|null,
+    error: string,
+    loading: boolean
+}
+
+const UseAxios = ({ url, method, body = null, headers = null }: IUseAxiosArguments):IUseAxiosResponse => {
     const [response, setResponse] = useState(null);
     const [error, setError] = useState('');
-    const [loading, setloading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const fetchData = () => {
         switch(method) {
             case 'get':
+                setLoading(true)
                 axios.get(url)
-                    .then((res) => {
-                        setResponse(res.data);
-                    })
-                    .catch((err) => {
-                        setError(err);
-                    })
-                    .finally(() => {
-                        setloading(false);
-                    });
+                .then((res) => {
+                    setResponse(res.data);
+                })
+                .catch((err) => {
+                    setError(err);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
                 break;
             case 'post':
                 if (headers !== null && body !== null) {
+                    setLoading(true)
                     axios.post(url, JSON.parse(headers), JSON.parse(body))
                         .then((res) => {
                             setResponse(res.data);
@@ -39,7 +47,7 @@ const UseAxios = ({ url, method, body = null, headers = null }: IUseAxiosArgumen
                             setError(err);
                         })
                         .finally(() => {
-                            setloading(false);
+                            setLoading(false);
                         });
                 }
                 break;

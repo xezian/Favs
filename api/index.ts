@@ -1,16 +1,22 @@
 import express from 'express';
 import cors from 'cors';
+import axios from 'axios';
 
 const app = express();
 
 app.use(cors({ credentials: true }))
 
-app.get('/', (req, res) => {
-    res.send('Well done!');
-})
-
-app.get('/banks/:something', (req, res) => {
-    res.send(req.params.something);
+app.get('/banks/:search', (req, res) => {
+    const baseUrl =  "https://banks.data.fdic.gov/api/institutions?fields=NAME&search=NAME:"
+    const searchTerm = req.params.search
+    const url = baseUrl + searchTerm
+    axios.get(url)
+        .then(response => {
+            res.send(response.data)
+        })
+        .catch(error => {
+            res.send(error)
+        })
 })
 app.get('/banks/favs/', (req, res) => {
     res.send("Favs");
