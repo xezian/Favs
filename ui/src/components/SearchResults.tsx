@@ -3,19 +3,25 @@ import React, { useState,useEffect } from 'react';
 import UseAxios from '../hooks/useAxios';
 import BankCard from './BankCard';
 
-interface ISearchProps {
-    search: string
+interface ISearchResultsProps {
+    search: string,
+    favs: string[],
+    refreshFavs: () => void
 }
 
-const SearchResults = (props: ISearchProps) => {
-    const { search } = props;
+const SearchResults = (props: ISearchResultsProps) => {
+    const { search, favs, refreshFavs } = props;
     // const [user, setUser] = useState(null);
     const [data, setData] = useState<AxiosResponse[]>([]);
 
-    const { response, loading, error } = UseAxios({
-        method: 'get',
-        url: `/banks/${search}`,
-    });
+    const { response, loading, error, fetchData } = UseAxios();
+
+    useEffect(() => {
+        fetchData({
+            method: 'get',
+            url: `/banks/${search}`,
+        })
+    }, [search]);
 
     useEffect(() => {
         if (response !== null) {
@@ -24,6 +30,10 @@ const SearchResults = (props: ISearchProps) => {
             }
         }
     }, [response]);
+
+    const handleRefreshFavs = () => {
+        refreshFavs();
+    }
 
 
     return (
@@ -41,7 +51,7 @@ const SearchResults = (props: ISearchProps) => {
                         <div>
                             {
                                 data && data.map((item, index)=> {
-                                    return <BankCard key={index} bank={item.data} />
+                                    return <BankCard faved={favs.includes(item.data.NAME)} refreshFavs={handleRefreshFavs} key={index} bank={item.data} />
                                 })
                             }
                         </div>
