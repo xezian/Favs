@@ -4,29 +4,31 @@ import PropTypes from 'prop-types'
 import UseAxios from '../hooks/useAxios';
 
 interface IBankCardProps {
-    bank: IBankInfo,
-    faved: boolean,
+    bank: IBankInfo
+    faved: boolean
+    bold?: boolean
     refreshFavs: () => void
+    children?: any
 }
 
 export interface IBankInfo {
-    UNINUM: number,
-    NAME: string,
-    WEBADDR: string,
-    ZIP: number,
-    CITY: string,
-    STNAME: string,
-    ASSET: string,
-    BKCLASS: string,
-    ACTIVE: string,
-    NAMEHCR: string,
-    MDI_STATUS_CODE: string,
-    MDI_STATUS_DESC: string,
+    UNINUM: number
+    NAME: string
+    WEBADDR: string
+    ZIP: number
+    CITY: string
+    STNAME: string
+    ASSET: string
+    BKCLASS: string
+    ACTIVE: string
+    NAMEHCR: string
+    MDI_STATUS_CODE: string
+    MDI_STATUS_DESC: string
     OFFICES: number
 }
 
 const BankCard = (props: IBankCardProps) => {
-    const { bank, faved, refreshFavs } = props;
+    const { bank, faved, bold, refreshFavs, children } = props;
     const [go, setGo] = useState(false);
     const { response, fetchData } = UseAxios()
     const navigate = useNavigate();
@@ -65,13 +67,14 @@ const BankCard = (props: IBankCardProps) => {
     return (
         <div className="bankCard">
             <div className="bankRow">
-                <span className="bankLink" onClick={()=>handleClickBankName()}>{bank.NAME}</span>
+                <span className="bankLink" onClick={()=>handleClickBankName()}>{bold ? <strong>{bank.NAME}</strong> : bank.NAME}</span>
                 <span onClick={()=>{handleClick()}} className="clickEmoji">
                     {
                         faved ? '💚' : '🤍'
                     }
                 </span>
             </div>
+            {children}
         </div>
     )
 }

@@ -41,7 +41,7 @@ const Search = () => {
         <div className='twoCols'>
             <div>
                 <h1>Financial Institutions Search:</h1>
-                <input onChange={(e)=>{setInput(e.target.value)}} type="text" placeholder="Search for a bank" />
+                <input className="niceInput" onChange={(e)=>{setInput(e.target.value)}} type="text" placeholder="Search for a bank" />
                 { search.length ? <SearchResults favUninums={favs.map((fav)=>fav.UNINUM)} search={search} refreshFavs={handleRefreshFavs}/> : null}
             </div>
             <div>
