@@ -14,13 +14,15 @@ const Bank = () => {
     const {response, loading, error, fetchData} = UseAxios();
 
     useEffect(()=> {
-        fetchData({
-            url: `/bank/${bankId}`,
-        })
-    },[])
+        if(faved) {
+            fetchData({
+                url: `/bank/${bankId}`,
+            })
+        }
+    },[faved])
 
     useEffect(() => {
-        if(response !== null) {
+        if(response?.data[0]) {
             setBank(response.data[0])
             setNotes(response.data[0].COMMENTS ? response.data[0].COMMENTS : '')
         }
@@ -70,19 +72,25 @@ const Bank = () => {
                                     <p><strong>OFFICES:</strong> {bank.OFFICES}</p>
                                     <p className="notesRow">
                                         <strong>NOTES:</strong>
-                                        {edit ? (
-                                            <>
-                                                <textarea onChange={(e)=>setNotes(e.target.value)} value={notes} className="editNotes">
-                                                </textarea>
-                                                <span onClick={handleSaveComment} className="clickEmoji">✅</span>
-                                                <span onClick={()=>setEdit(false)} className="clickEmoji">❌</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span onClick={()=>setEdit(true)} className="clickEmoji">✍️</span>
-                                                {bank.COMMENTS}
-                                            </>
-                                        )}
+                                        {
+                                            faved ? (
+                                                <>
+                                                    {edit ? (
+                                                        <>
+                                                            <textarea onChange={(e)=>setNotes(e.target.value)} value={notes} className="editNotes">
+                                                            </textarea>
+                                                            <span onClick={handleSaveComment} className="clickEmoji">✅</span>
+                                                            <span onClick={()=>setEdit(false)} className="clickEmoji">❌</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span onClick={()=>setEdit(true)} className="clickEmoji">✍️</span>
+                                                            {bank.COMMENTS}
+                                                        </>
+                                                    )}
+                                                </>
+                                            ) : null
+                                        }
                                     </p>
                                 </div>
                             </BankCard>

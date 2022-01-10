@@ -14,7 +14,7 @@ const Search = () => {
         // 2 second debounce on change input setting search state
         const timeoutID = setTimeout(() => {
             setSearch(input)
-        }, 2000);
+        }, 1200);
         return () => clearTimeout(timeoutID);
     }, [input]);
 
