@@ -9,6 +9,8 @@ const Bank = () => {
     const {bankId} = useParams();
     const [bank, setBank] = useState<IFavInfo|null>(null);
     const [faved, setFaved] = useState(true);
+    const [edit, setEdit] = useState(false);
+    const [notes, setNotes] = useState('');
     const {response, loading, error, fetchData} = UseAxios();
 
     useEffect(()=> {
@@ -20,8 +22,20 @@ const Bank = () => {
     useEffect(() => {
         if(response !== null) {
             setBank(response.data[0])
+            setNotes(response.data[0].COMMENTS ? response.data[0].COMMENTS : '')
         }
     }, [response])
+
+    const handleSaveComment = () => {
+        fetchData({
+            url: `/bank/${bankId}`,
+            method: 'put',
+            params: {
+                COMMENTS: notes
+            }
+        })
+        setEdit(false)
+    }
 
     const handleRefreshFaves = () => {
         setFaved(!faved)
@@ -54,12 +68,29 @@ const Bank = () => {
                                     <p><strong>MDI_STATUS_CODE:</strong> {bank.MDI_STATUS_CODE}</p>
                                     <p><strong>MDI_STATUS_DESC:</strong> {bank.MDI_STATUS_DESC}</p>
                                     <p><strong>OFFICES:</strong> {bank.OFFICES}</p>
+                                    <p className="notesRow">
+                                        <strong>NOTES:</strong>
+                                        {edit ? (
+                                            <>
+                                                <textarea onChange={(e)=>setNotes(e.target.value)} value={notes} className="editNotes">
+                                                </textarea>
+                                                <span onClick={handleSaveComment} className="clickEmoji">✅</span>
+                                                <span onClick={()=>setEdit(false)} className="clickEmoji">❌</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span onClick={()=>setEdit(true)} className="clickEmoji">✍️</span>
+                                                {bank.COMMENTS}
+                                            </>
+                                        )}
+                                    </p>
                                 </div>
                             </BankCard>
                         }
                     </>
                 }
             </div>
+            
         </div>
     )
 }

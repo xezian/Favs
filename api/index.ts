@@ -37,6 +37,20 @@ app.get('/bank/:bankId', async (req,res) => {
 })
 
 /**
+ * Update comments for a fav bank
+ */
+app.put('/bank/:bankId', async (req,res) => {
+    const bankId = req.params.bankId
+    const comments = req.query.COMMENTS
+    const client = db()
+    await client.connect()
+    await client.query(`UPDATE favs SET "COMMENTS" = $1 WHERE id = $2`, [comments, bankId])
+    const result = await client.query(`SELECT * FROM favs WHERE id = ${bankId}`)
+    await client.end()
+    res.send({data:result.rows})
+})
+
+/**
  * Get all the IDs from the favs table, query the API for the name of each ID, and return the results
  * 
  */

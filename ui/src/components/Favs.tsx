@@ -5,6 +5,7 @@ import { IBankInfo } from './BankCard';
 
 export interface IFavInfo extends IBankInfo {
     id: number
+    COMMENTS?: string
 }
 
 interface IFavsArguments {

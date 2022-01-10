@@ -68,7 +68,7 @@ const BankCard = (props: IBankCardProps) => {
         <div className="bankCard">
             <div className="bankRow">
                 <span className="bankLink" onClick={()=>handleClickBankName()}>{bold ? <strong>{bank.NAME}</strong> : bank.NAME}</span>
-                <span onClick={()=>{handleClick()}} className="clickEmoji">
+                <span onClick={()=>{handleClick()}} title={`${faved ? 'Unfav' : 'Fav'}`} className="clickEmoji">
                     {
                         faved ? '💚' : '🤍'
                     }
