@@ -7,11 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
   background-color: #172e5c;
@@ -38,11 +33,34 @@
 }
 
 .bankCard {
+  box-shadow: 0px 0px 6px 0px rgb(185, 181, 185);
   border: 1px solid #172e5c;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
   background-color: #61dafb;
+}
+
+.favRow a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bankCard:hover {
+  text-decoration: none;
+  box-shadow: 1px 1px 6px 1px rgb(131, 122, 131);
+}
+
+.bankRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bankLink:hover {
+  text-shadow: -1px -1px 6px rgb(255, 255, 255), 1px 1px 6px rgb(243, 243, 243);
+  cursor: pointer
 }
 
 .clickRow {
@@ -53,9 +71,19 @@
 }
 
 .clickEmoji {
+  min-width: 20px;
   cursor: pointer;
+  margin: 0 10px;
 }
 
 .clickEmoji:hover {
-  text-shadow: -2px -2px 8px rgb(249, 250, 202), 2px 2px 8px rgb(249, 250, 202);
+  text-shadow: -1px -1px 6px rgb(185, 181, 185), 1px 1px 6px rgb(185, 181, 185);
+}
+
+.favRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
 }

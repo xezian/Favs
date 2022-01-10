@@ -1,18 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import SearchResults from './SearchResults';
-import Favs from './Favs';
+import Favs, { IFavInfo } from './Favs';
 import UseAxios from '../hooks/useAxios';
-
-export interface IFavObject {
-    name: string,
-    id: string
-}
 
 const Search = () => {
     // const [user, setUser] = useState(null);
     const [input, setInput] = useState("");
     const [search, setSearch] = useState("");
-    const [favs, setFavs] = useState<IFavObject[]>([]);
+    const [favs, setFavs] = useState<IFavInfo[]>([]);
     const { response, loading, error, fetchData } = UseAxios()
 
     useEffect(()=> {
@@ -47,11 +42,11 @@ const Search = () => {
             <div>
                 <h1>Financial Institutions Search:</h1>
                 <input onChange={(e)=>{setInput(e.target.value)}} type="text" placeholder="Search for a bank" />
-                { search.length ? <SearchResults favs={favs.map((fav)=>fav.name)} search={search} refreshFavs={handleRefreshFavs}/> : null}
+                { search.length ? <SearchResults favUninums={favs.map((fav)=>fav.UNINUM)} search={search} refreshFavs={handleRefreshFavs}/> : null}
             </div>
             <div>
                 <h1>Favs:</h1>
-                {loading ? 'loading...' : error ? error : <Favs favs={favs}/>}
+                {loading ? 'loading...' : error ? error : <Favs refreshFavs={handleRefreshFavs} favs={favs}/>}
             </div>
         </div>
     );

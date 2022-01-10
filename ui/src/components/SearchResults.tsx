@@ -5,12 +5,12 @@ import BankCard from './BankCard';
 
 interface ISearchResultsProps {
     search: string,
-    favs: string[],
+    favUninums: number[],
     refreshFavs: () => void
 }
 
 const SearchResults = (props: ISearchResultsProps) => {
-    const { search, favs, refreshFavs } = props;
+    const { search, favUninums, refreshFavs } = props;
     // const [user, setUser] = useState(null);
     const [data, setData] = useState<AxiosResponse[]>([]);
 
@@ -51,7 +51,9 @@ const SearchResults = (props: ISearchResultsProps) => {
                         <div>
                             {
                                 data && data.map((item, index)=> {
-                                    return <BankCard faved={favs.includes(item.data.NAME)} refreshFavs={handleRefreshFavs} key={index} bank={item.data} />
+                                    return (
+                                        <BankCard key={index} faved={favUninums.includes(parseInt(item.data.UNINUM))} refreshFavs={handleRefreshFavs}  bank={item.data} />
+                                    )
                                 })
                             }
                         </div>
